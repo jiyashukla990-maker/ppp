@@ -74,10 +74,14 @@ app.post("/api/apps", async (req: Request, res: Response) => {
 /* Correct Proxy Route */
 /* ----------------------------- */
 
-app.all("/p/:slug/*", async (req: Request, res: Response) => {
+app.all("/p/:slug/*path", async (req: Request, res: Response) => {
   try {
-    const slug = req.params.slug;
-    const path = req.params[0]; // IMPORTANT: wildcard is stored here
+    const slug = Array.isArray(req.params.slug)
+      ? req.params.slug[0]
+      : (req.params.slug ?? "");
+    const path = Array.isArray(req.params.path)
+      ? req.params.path.join("/")
+      : (req.params.path ?? "");
 
     if (!path) {
       return res.status(400).json({ error: "Missing path" });
