@@ -7,10 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  email     String   @unique
+  image     String?
+  createdAt DateTime @default(now())
+
+  apps      App[]
+}
+
 model App {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  slug        String  @unique
+  slug        String @unique
   supabaseUrl String
-  userId      String
+  userId      String @db.ObjectId
+
+  user        User   @relation(fields: [userId], references: [id])
 }
