@@ -91,7 +91,7 @@ app.delete("/api/apps/:id", requireAuth, async (req: AuthenticatedRequest, res: 
   res.json({ success: true });
 });
 
-app.all("/:slug/:path*", async (req: Request, res: Response) => {
+app.all("/:slug/*path", async (req: Request, res: Response) => {
   try {
     const slug = typeof req.params.slug === "string" ? req.params.slug : req.params.slug?.[0];
     const pathParam = req.params.path;
